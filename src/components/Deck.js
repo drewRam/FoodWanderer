@@ -13,6 +13,7 @@ const SWIPE_THRESHOLD = 0.25 * SCREEN_WIDTH;
 const SWIPE_OUT_DURATION = 250;
 
 const Deck = ({results, renderCard}) => {
+    const [current, setCurrent] = useState(0);
     const [position, setPosition] = useState(new Animated.ValueXY());
     const [panResponder, setPanResponder] = useState(PanResponder.create({
         onStartShouldSetPanResponder: () => true,
@@ -45,8 +46,17 @@ const Deck = ({results, renderCard}) => {
             toValue: { x, y: 0 },
             duration: SWIPE_OUT_DURATION,
             useNativeDriver: false,
-        }).start();
+        }).start(() => onSwipeComplete(direction));
     }
+
+    const onSwipeComplete = (direction) => {
+        //const { onSwipeLeft, onSwipeRight } = props;
+        //const item = results[current];
+        
+        //direction === 'right' ? onSwipeRight(item) : onSwipeLeft(item);
+        position.setValue({x: 0, y: 0});
+        setCurrent((previounsIndex) => previounsIndex + 1); // Not modifying the existing value (index++), but reseting it through the use of state
+    };
 
     /**
      * Resets position to default values of Animated.ValueXY
@@ -80,7 +90,8 @@ const Deck = ({results, renderCard}) => {
     const renderCards = () => {
         {
             return results.map((item, index) => {
-                if(index === 0){
+                if(index < current) { return null; }
+                if(index === current) {
                     return (
                         <Animated.View
                             key={item.id}
@@ -92,7 +103,7 @@ const Deck = ({results, renderCard}) => {
                     );
                 }
 
-                return renderCard(item);
+                //return renderCard(item);
             });
         }
     }
