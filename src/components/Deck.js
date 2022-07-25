@@ -55,7 +55,7 @@ const Deck = ({results, renderCard}) => {
         
         //direction === 'right' ? onSwipeRight(item) : onSwipeLeft(item);
         position.setValue({x: 0, y: 0});
-        setCurrent((previounsIndex) => previounsIndex + 1); // Not modifying the existing value (index++), but reseting it through the use of state
+        setCurrent((previousIndex) => previousIndex + 1); // Not modifying the existing value (index++), but reseting it through the use of state
     };
 
     /**
